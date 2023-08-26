@@ -78,10 +78,6 @@ public class CatalogController {
         model.addAttribute("listCatalog", searchResult);
         return "admin/category"; // Đổi thành tên view của bạn nếu cần
     }
-    @GetMapping("/user")
-    public String user() {
-        return "admin/user";
-    }
 
     @GetMapping("/error")
     public String error() {

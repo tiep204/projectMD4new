@@ -35,78 +35,6 @@
         <main class="content">
             <!--edit vao day-->
             <form th:action="@{/editProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
-                <!--
-                                    <table border="1px solid black">
-                                        <tr>
-                                            <td>ID Sản phẩm</td>
-                                            <td><input type="number" readonly th:field="*{productId}"></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>TÊN sản phẩm</td>
-                                            <td><input type="text" placeholder="name" th:field="*{productName}"></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Giá sản phẩm</td>
-                                            <td><input type="number" placeholder="price" th:field="*{price}"></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Số lượng sản phẩm</td>
-                                            <td><input type="number" placeholder="stock" th:field="*{stock}"></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Ảnh</td>
-                                            <td>
-                                                <input type="file" th:field="*{image}">
-                                                <img width="100px" th:src="@{|/image/${pro.image}|}" th:alt="${product.image}">
-                                            </td>
-                                            <td><input type="hidden" name="productImageOld" th:value="${product.image}"></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Ảnh phụ</td>
-                                            <td>
-                                                <input type="file" name="listImage" multiple/>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Trạng Thái</td>
-                                            <td>
-                                                <select name="status">
-                                                    <option value="true" th:selected="${product.status}">Còn Hang</option>
-                                                    <option value="false" th:selected="${!product.status}">Hết Hàng</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>chọn danh mục</td>
-                                            <select id="category" name="category" th:field="*{category}" class="form-select"
-                                                    aria-label="Default select example">
-                                                <option th:each="cat : ${listCatalog}"
-                                                        th:value="${cat.catalogId == product.category}?'selected':''"
-                                                        th:text="${cat.catalogName}">
-                                                </option>
-                                            </select>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mô tả sản phẩm</td>
-                                            <td><textarea placeholder="......" th:field="*{description}"></textarea></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td colspan="2">
-                                                <input type="submit" value="update" name="action"/>
-                                            </td>
-                                        </tr>
-
-                                    </table>
-                -->
                 <table border="1px solid block">
                     <tr>
                         <td>ID Sản phẩm</td>
@@ -159,7 +87,7 @@
                     <tr>
                         <td>Ảnh phụ</td>
                         <td>
-                            <input type="file" th:field="*{listImage}">
+                            <input type="file" th:field="*{listImage}" multiple>
                         </td>
                     </tr>
 

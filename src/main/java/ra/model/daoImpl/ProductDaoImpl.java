@@ -163,6 +163,33 @@ public class ProductDaoImpl implements ProductDAO {
 
     @Override
     public List<Product> searchByName(String name) {
-        return null;
+        Connection conn = null;
+        CallableStatement callSt = null;
+        List<Product> productList = null;
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("{call proc_findByProductName(?)}");
+            productList = new ArrayList<>();
+            callSt.setString(1,name);
+            ResultSet rs = callSt.executeQuery();
+            while (rs.next()){
+                Product product = new Product();
+                product.setProductId(rs.getInt("product_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setCategory(rs.getInt("catalog_id"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getFloat("price"));
+                product.setImage(rs.getString("image"));
+                product.setStock(rs.getInt("stock"));
+                product.setStatus(rs.getBoolean("status"));
+                product.setCreateProduct(rs.getDate("created_at"));
+                productList.add(product);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            ConnectionDB.closeConnection(conn,callSt);
+        }
+        return productList;
     }
 }

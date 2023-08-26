@@ -162,6 +162,10 @@ public class ProductController {
         productService.saveOfUpdate(newVideo);
         return "redirect:/product";
     }
-
-
+    @GetMapping("/searchProduct")
+    public String searchCategory(@RequestParam("name") String name, Model model) {
+        List<Product> searchResult = productService.searchByName(name);
+        model.addAttribute("listProduct", searchResult);
+        return "admin/product"; // Đổi thành tên view của bạn nếu cần
+    }
 }

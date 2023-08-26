@@ -11,10 +11,12 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
+    private String phoneNumber;
+    private String address;
     private boolean gender;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
 
-    private String birthDate;
+    private Date birthDate;
     private int role;
     private boolean status;
     private String avatar;
@@ -25,19 +27,37 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String username, String email, String firstName, String lastName, String password, boolean gender, String birthDate, int role, boolean status, String avatar, Date createdAt) {
+    public User(int userId, String username, String email, String firstName, String lastName, String password, String phoneNumber, String address, boolean gender, Date birthDate, int role, boolean status, String avatar, Date createdAt) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
         this.gender = gender;
         this.birthDate = birthDate;
         this.role = role;
         this.status = status;
         this.avatar = avatar;
         this.createdAt = createdAt;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public int getUserId() {
@@ -96,11 +116,11 @@ public class User {
         this.gender = gender;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 

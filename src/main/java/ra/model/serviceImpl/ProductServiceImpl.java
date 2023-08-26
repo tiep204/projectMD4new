@@ -31,4 +31,9 @@ public class ProductServiceImpl implements ProductService {
     public Product getById(Integer id) {
         return productDAO.getById(id);
     }
+
+    @Override
+    public List<Product> searchByName(String name) {
+        return productDAO.searchByName(name);
+    }
 }
