@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ra.dto.ProductDTO;
 import ra.model.entity.Category;
 import ra.model.entity.Product;
+import ra.model.entity.User;
 import ra.model.service.CategoryService;
 import ra.model.service.ProductService;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/productController")
 @PropertySource("classpath:upload.properties")
 public class ProductController {
     @Autowired
@@ -36,7 +37,7 @@ public class ProductController {
     private CategoryService categoryService;
     private static final Gson GSON = new GsonBuilder().create();
 
-    @GetMapping("/product")
+    @GetMapping({"", "product"})
     public String getAll(Model model) {
         List<Category> categoryList = categoryService.getAll();
         List<Product> productList = productService.getAll();
@@ -91,14 +92,14 @@ public class ProductController {
         newVideo.setCreateProduct(productDTO.getCreateProduct());
         newVideo.setListImage(fileListImage);
         productService.saveOfUpdate(newVideo);
-        return "redirect:/product";
+        return "redirect:/productController/product";
     }
 
     @PostMapping("/updateP")
     public String updateCategory(@ModelAttribute Product product) {
         try {
             productService.saveOfUpdate(product);
-            return "redirect:/product";
+            return "redirect:/productController/product";
         } catch (Exception e) {
             e.printStackTrace();
             return "admin/error";
@@ -108,7 +109,7 @@ public class ProductController {
     @PostMapping("/deleteProduct")
     public String deleteCategory(@RequestParam int productId) {
         productService.delete(productId);
-        return "redirect:/product";
+        return "redirect:/productController/product";
     }
 
     @GetMapping("/editProduct/{id}")
@@ -160,12 +161,20 @@ public class ProductController {
         newVideo.setCreateProduct(productDTO.getCreateProduct());
         newVideo.setListImage(fileListImage);
         productService.saveOfUpdate(newVideo);
-        return "redirect:/product";
+        return "redirect:/productController/product";
     }
     @GetMapping("/searchProduct")
     public String searchCategory(@RequestParam("name") String name, Model model) {
         List<Product> searchResult = productService.searchByName(name);
         model.addAttribute("listProduct", searchResult);
         return "admin/product"; // Đổi thành tên view của bạn nếu cần
+    }
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable int id, Model model) {
+        Product product = productService.getById(id);
+        List<Category> categoryList = categoryService.getAll();
+        model.addAttribute("listCatalog", categoryList);
+        model.addAttribute("product", product);
+        return "admin/detailProduct";
     }
 }

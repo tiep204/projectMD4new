@@ -1,5 +1,6 @@
 package ra.model.dao;
 
+import ra.dto.UserLoginDTO;
 import ra.model.entity.User;
 
 import java.util.List;
@@ -9,5 +10,7 @@ public interface UserDAO extends ShopDAO<User,Integer> {
     boolean updateUserBlock(int id);
     boolean updateUserUnlock(int id);
     List<User> searchByName(String name);
-    User login(String userName, String password);
+    User login(UserLoginDTO userLoginDTO);
+
+    User seachUsername(String name);
 }

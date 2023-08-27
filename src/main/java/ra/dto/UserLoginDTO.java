@@ -1,10 +1,14 @@
 package ra.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.Errors;
+import ra.model.entity.User;
+import ra.model.service.UserService;
 
 import java.util.Date;
 
 public class UserLoginDTO {
+    private final  String PATTERN_PASS = "/^[a-z]{6,}$/";
     private String username;
     private String password;
     private int role;
@@ -50,5 +54,16 @@ public class UserLoginDTO {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+ public User checkValidate(Errors errors, UserService userService){
+        User user = null;
+        if(this.username.trim().equals("")){
+            errors.rejectValue("username","username.empty");
+        }else if(this.password.length()<8){
+            errors.rejectValue("password","password.invalid");
+        }else{
+           user = userService.login(this);
+        }
+        return user;
     }
 }

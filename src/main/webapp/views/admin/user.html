@@ -41,8 +41,8 @@
                                 <a class="navbar-brand" href="#">
                                     <button type="button" class="btn btn-success">+ Create new Account</button>
                                 </a>
-                                <form class="d-flex" role="search">
-                                    <input class="form-control me-2 fst-italic" type="search"
+                                <form class="d-flex" role="search" th:action="@{/userController/search}">
+                                    <input class="form-control me-2 fst-italic" type="search" name="name"
                                            placeholder="Enter user's name... "
                                            aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -78,22 +78,22 @@
                                 <td th:text="${#dates.format(user.birthDate, 'dd/MM/yyyy')}"></td>
                                 <td th:text="${user.gender} ? 'male' : 'female' "></td>
                                 <td>
-                                    <span th:if="${user.role == 1}">admin</span>
-                                    <span th:if="${user.role == 0}">user</span>
+                                    <span th:if="${user.role == 1}">user</span>
+                                    <span th:if="${user.role == 0}">admin</span>
                                 </td>
                                 <td th:text="${user.status} ? 'Online' : 'Offline' ">
                                 </td>
                                 <td th:text="${#dates.format(user.createdAt, 'dd/MM/yyyy')}">
                                 </td>
                                 <td>
-                                    <form method="post" th:action="@{/unlock}"
+                                    <form method="post" th:action="@{/userController/unlock}"
                                           onsubmit="return confirm('Bạn có chắc chắn muốn Unlock không?');">
                                         <input type="hidden" name="userId" th:value="${user.userId}">
                                         <button type="submit" class="btn btn-success">Unlock</button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form method="post" th:action="@{/block}"
+                                    <form method="post" th:action="@{/userController/block}"
                                           onsubmit="return confirm('Bạn có chắc chắn muốn Block không?');">
                                         <input type="hidden" name="userId" th:value="${user.userId}">
                                         <button type="submit" class="btn btn-danger">Block</button>

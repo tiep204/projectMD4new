@@ -16,7 +16,7 @@
 
 	<title>AdminKit Demo - Bootstrap 5 Admin Template</title>
 
-    <link th:href="@{admin/css/app.css}" rel="stylesheet">
+    <link th:href="@{/css/app.css}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
     function showEditCategory(id) {
         console.log(id)
         $.ajax({
-            url: "http://localhost:8080/edit/"+id,
+            url: "http://localhost:8080/catalogController/edit/"+id,
             method: 'GET',
             dataType: 'json',
             headers: {
@@ -68,7 +68,7 @@
                                 <a class="navbar-brand" href="#">
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Add new Category</button>
                                 </a>
-                                <form class="d-flex" role="search" th:action="@{/search}" method="get">
+                                <form class="d-flex" role="search" th:action="@{/catalogController/search}" method="get">
                                     <input class="form-control me-2 fst-italic" type="search" name="name" placeholder="Enter category's name..."
                                            aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <!-- Add a form to input catalogName -->
-                                    <form th:action="@{/save}" method="post">
+                                    <form th:action="@{/catalogController/save}" method="post">
                                         <div class="form-group">
                                             <label for="catalogName">Catalog Name</label>
                                             <input type="text" class="form-control" id="catalogName" name="catalogName"  required>
@@ -124,7 +124,7 @@
 
                                 </td>
                                 <td>
-                                    <form method="post" action="/delete" onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                    <form method="post" th:action="@{/catalogController/delete}" onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                                         <input type="hidden" name="catalogId" th:value="${cat.catalogId}">
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
@@ -184,7 +184,7 @@
     </div>
 </div>
 <!-- Modal -->
-<form th:action="@{/update}" method="post" >
+<form th:action="@{/catalogController/update}" method="post" >
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

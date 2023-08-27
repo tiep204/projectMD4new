@@ -46,11 +46,11 @@
                                             data-bs-target="#exampleModal">+ Add new Product
                                     </button>
                                 </a>
-                                <form class="d-flex" role="search" th:action="@{/searchProduct}">
+                                <form class="d-flex" role="search" th:action="@{/productController/searchProduct}">
                                     <input class="form-control me-2 fst-italic" type="search" name="name"
                                            placeholder="Enter product's name... "
                                            aria-label="Search">
-                                    <button class="btn btn-outline-success"  type="submit">Search</button>
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
                                 </form>
                             </div>
                         </nav>
@@ -67,7 +67,7 @@
                                 <th>Price</th>
                                 <th>Status</th>
                                 <th>Category</th>
-                                <th colspan="2">Action</th>
+                                <th colspan="3">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -82,10 +82,15 @@
                                 <td th:text="${pro.status} ? 'Đang bán':'Ngừng bán'"></td>
                                 <td th:text="${pro.category}"></td>
                                 <td>
-                                    <a th:href="@{|/editProduct/${pro.productId}|}" class="btn btn-warning">Edit</a>
+                                    <a th:href="@{|/productController/editProduct/${pro.productId}|}"
+                                       class="btn btn-warning">Edit</a>
                                 </td>
                                 <td>
-                                    <form method="post" action="/deleteProduct"
+                                    <a th:href="@{|/productController/detail/${pro.productId}|}"
+                                       class="btn btn-primary">Detail</a>
+                                </td>
+                                <td>
+                                    <form method="post" th:action="@{/productController/deleteProduct}"
                                           onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                                         <input type="hidden" name="productId" th:value="${pro.productId}">
                                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -156,7 +161,8 @@
             </div>
             <div class="modal-body">
                 <!-- Add a form to input catalogName -->
-                <form th:action="@{/create}" th:object="${product}" method="post" enctype="multipart/form-data">
+                <form th:action="@{/productController/create}" th:object="${product}" method="post"
+                      enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="productName">product Name</label>
                         <input type="text" class="form-control" id="productName" name="productName"

@@ -1,6 +1,7 @@
 package ra.model.serviceImpl;
 
 import org.springframework.stereotype.Service;
+import ra.dto.UserLoginDTO;
 import ra.model.dao.UserDAO;
 import ra.model.daoImpl.UserDaoImpl;
 import ra.model.entity.Category;
@@ -54,7 +55,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(String userName, String password) {
-        return userDAO.login(userName,password);
+    public User login(UserLoginDTO userLoginDTO) {
+        return userDAO.login(userLoginDTO);
+    }
+
+    @Override
+    public User seachUsername(String name) {
+        return userDAO.seachUsername(name);
     }
 }

@@ -34,7 +34,9 @@
         <th:block th:replace="admin/layout/header.html::header"></th:block>
         <main class="content">
             <!--edit vao day-->
-            <form th:action="@{/editProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+<!--
+            <form th:action="@{/productController/editProduct}" th:object="${product}" method="post"
+                  enctype="multipart/form-data">
                 <table border="1px solid block">
                     <tr>
                         <td>ID Sản phẩm</td>
@@ -42,19 +44,17 @@
                             <input type="number" readonly th:field="*{productId}">
                         </td>
                     </tr>
-
                     <tr>
                         <td>Tên sản phẩm</td>
                         <td>
                             <input type="text" placeholder="name" th:field="*{productName}">
                         </td>
                     </tr>
-
                     <tr>
                         <td>Danh mục</td>
                         <td>
-                            <!--<input type="number" name="category" th:field="*{category}">-->
-                            <select  th:field="*{category}" class="form-select"
+                            &lt;!&ndash;<input type="number" name="category" th:field="*{category}">&ndash;&gt;
+                            <select th:field="*{category}" class="form-select"
                                     aria-label="Default select example">
                                 <option th:each="cat : ${listCatalog}"
                                         th:value="${cat.catalogId}"
@@ -112,6 +112,61 @@
                         </td>
                     </tr>
                 </table>
+            </form>
+-->
+
+
+            <form th:action="@{/productController/editProduct}" th:object="${product}" method="post"
+                  enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label  class="form-label">ID Sản phẩm</label>
+                    <input type="number" class="form-control"  th:field="*{productId}" readonly >
+                </div>
+
+                <div class="mb-3">
+                    <label  class="form-label">Tên sản phẩm</label>
+                    <input class="form-control" type="text" placeholder="name" th:field="*{productName}">
+                </div>
+
+
+                <div>
+                    <label>Danh mục</label>
+                    <!--<input type="number" name="category" th:field="*{category}">-->
+                    <select th:field="*{category}" class="form-select"
+                            aria-label="Default select example">
+                        <option th:each="cat : ${listCatalog}"
+                                th:value="${cat.catalogId}"
+                                th:text="${cat.catalogName}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label  class="form-label">Price</label>
+                    <input class="form-control" type="number" placeholder="price" th:field="*{price}">
+                </div>
+                <div class="mb-3">
+                    <label  class="form-label">Stock</label>
+                    <input class="form-control" type="number" placeholder="stock" th:field="*{stock}">
+                </div>
+                <div class="mb-3">
+                    <label  class="form-label">Ảnh</label>
+                    <input type="file" class="form-control" th:field="*{image}">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Ảnh phụ</label>
+                    <input type="file" class="form-control" id="exampleInputPassword1" th:field="*{listImage}" multiple>
+                </div>
+                <div>
+                    <label for="exampleInputPassword1" class="form-label">Trạng thái</label>
+                    <select name="status" class="form-select"
+                            aria-label="Default select example">
+                        <option value="true" th:selected="${product.status}">In Stock</option>
+                        <option value="false" th:selected="${!product.status}">Out of Stock</option>
+                    </select>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary" value="update" name="action">Submit</button>
             </form>
         </main>
 

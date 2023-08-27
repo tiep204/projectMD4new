@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>eCommerce HTML-5 Template </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS here -->
+    <th:block th:replace="user/layout/css.html::css"></th:block>
+</head>
+<body>
+<th:block th:replace="user/layout/header.html::head"></th:block>
+
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+        <!-- Mobile Menu -->
+        <div class="single-slider slider-height2 d-flex align-items-center" data-background="assets/img/hero/category.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>product Detail</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+    
+    <!-- product list part start-->
+
+<!-- Product Details Area Start -->
+<th:block th:object="${product}">
+    <div class="single-product-area section-padding-100 clearfix">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-lg-7">
+                    <div class="single_product_thumb">
+                        <div id="product_details_slider" class="carousel slide" data-ride="carousel">
+                            <div>
+                                <img style="width: 700px;height: 450px" th:src="@{|/image/${product.image}|}"
+                                     th:alt="${product.productName}">
+                            </div>
+                            <div>
+                                <td th:each="image : ${product.listImage}">
+                                    <img style="width: 230px;height: 200px" th:src="@{|/image/${image}|}"
+                                         th:alt="${product.productName}">
+                                </td>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="single_product_desc">
+                        <!-- Product Meta Data -->
+                        <div class="product-meta-data">
+                            <div class="line"></div>
+                            <p class="product-price" th:text=" 'Price: ' + ${product.price} + '$' ">VNĐ</p>
+                            <a href="product-details.jsp">
+                                <h6 th:text="${product.productName}"></h6>
+                            </a>
+                            <!-- Ratings & Review -->
+                            <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
+                                <div class="ratings">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <!-- Avaiable -->
+                            <p class="avaibility" th:text="${product.status} ? 'In Stock' : '' "><i class="fa fa-circle" ></i></p>
+
+                        </div>
+
+                        <div class="short_overview my-5">
+                            <p th:text="${product.description}"></p>
+                        </div>
+
+                        <!-- Add to Cart Form -->
+                        <form class="cart clearfix" method="post">
+                            <span th:text=" 'số lượng còn lại' + ${product.stock}"></span>
+
+                            <div class="cart-btn d-flex mb-50">
+                                <p>Qty</p>
+                                <div class="quantity">
+                                    <span class="qty-minus"
+                                          onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i
+                                            class="fa fa-caret-down" aria-hidden="true"></i></span>
+                                    <input type="number" class="qty-text" id="qty" step="1" min="1" th:max="${product.stock}"
+                                           name="stock" value="1">
+                                    <span class="qty-plus"
+                                          onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i
+                                            class="fa fa-caret-up" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                            <a class="btn amado-btn" href="<%=request.getContextPath()%>/CartServlet?action=addCart&&productId=${proDetail.productId}">Thêm vào rỏ hàng </a><br>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+<!-- Product Details Area End -->
+
+
+    <!-- product list part end-->
+    
+    <!-- client review part here -->
+    <section class="client_review">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="client_review_slider owl-carousel">
+                        <div class="single_client_review">
+                            <div class="client_img">
+                                <img th:src="@{/img/client.png}" alt="#">
+                            </div>
+                            <p>"Working in conjunction with humanitarian aid agencies, we have supported programmes to help alleviate human suffering.</p>
+                            <h5>- Micky Mouse</h5>
+                        </div>
+                        <div class="single_client_review">
+                            <div class="client_img">
+                                <img th:src="@{/img/client_1.png}" alt="#">
+                            </div>
+                            <p>"Working in conjunction with humanitarian aid agencies, we have supported programmes to help alleviate human suffering.</p>
+                            <h5>- Micky Mouse</h5>
+                        </div>
+                        <div class="single_client_review">
+                            <div class="client_img">
+                                <img th:src="@{/img/client_2.png}" alt="#">
+                            </div>
+                            <p>"Working in conjunction with humanitarian aid agencies, we have supported programmes to help alleviate human suffering.</p>
+                            <h5>- Micky Mouse</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- client review part end -->
+
+    <!-- Shop Method Start-->
+    <div class="shop-method-area section-padding30">
+        <div class="container">
+            <div class="row d-flex justify-content-between">
+                <div class="col-xl-3 col-lg-3 col-md-6">
+                    <div class="single-method mb-40">
+                        <i class="ti-package"></i>
+                        <h6>Free Shipping Method</h6>
+                        <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6">
+                    <div class="single-method mb-40">
+                        <i class="ti-unlock"></i>
+                        <h6>Secure Payment System</h6>
+                        <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                    </div>
+                </div> 
+                <div class="col-xl-3 col-lg-3 col-md-6">
+                    <div class="single-method mb-40">
+                        <i class="ti-reload"></i>
+                        <h6>Secure Payment System</h6>
+                        <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Method End-->
+
+    <!-- subscribe part here -->
+    <section class="subscribe_part section_padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="subscribe_part_content">
+                        <h2>Get promotions & updates!</h2>
+                        <p>Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources credibly innovate granular internal .</p>
+                        <div class="subscribe_form">
+                            <input type="email" placeholder="Enter your mail">
+                            <a href="#" class="btn_1">Subscribe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- subscribe part end -->
+
+<!--footer-->
+<th:block th:replace="user/layout/footer.html::footer">
+
+</th:block>
+
+<!-- JS here -->
+<th:block th:replace="user/layout/js.html::js"></th:block>
+
+</body>
+
+</html>

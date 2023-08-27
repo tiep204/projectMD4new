@@ -1,6 +1,7 @@
 package ra.model.daoImpl;
 
 import org.springframework.stereotype.Repository;
+import ra.dto.UserLoginDTO;
 import ra.model.dao.UserDAO;
 import ra.model.entity.Product;
 import ra.model.entity.User;
@@ -72,17 +73,18 @@ public class UserDaoImpl implements UserDAO{
         boolean result = true;
         try {
             conn = ConnectionDB.openConnection();
-            callSt = conn.prepareCall("{call proc_register(?,?,?,?,?,?,?,?,?,?)}");
+            callSt = conn.prepareCall("{call proc_register(?,?,?,?,?,?,?,?,?,?,?)}");
             callSt.setString(1,user.getUsername());
             callSt.setString(2,user.getEmail());
             callSt.setString(3, user.getFirstName());
             callSt.setString(4, user.getLastName());
             callSt.setString(5, user.getPassword());
             callSt.setString(6, user.getPhoneNumber());
-            callSt.setBoolean(7,user.isGender());
-            callSt.setDate(8,new Date(user.getBirthDate().getTime()));
-            callSt.setInt(9,user.getRole());
-            callSt.setDate(10,new Date(user.getCreatedAt().getTime()));
+            callSt.setString(7,user.getAddress());
+            callSt.setBoolean(8,user.isGender());
+            callSt.setDate(9,new Date(user.getBirthDate().getTime()));
+            callSt.setInt(10,1);
+            callSt.setDate(11,new Date(user.getCreatedAt().getTime()));
             callSt.executeUpdate();
         }catch (Exception e){
             result = false;
@@ -129,24 +131,90 @@ public class UserDaoImpl implements UserDAO{
         return result;
     }
 
-    @Override
-    public List<User> searchByName(String name) {
-        return null;
-    }
+
 
     @Override
-    public User login(String userName, String password) {
+    public User login(UserLoginDTO userLoginDTO) {
         Connection conn = null;
         CallableStatement callSt = null;
         User user = null;
         try {
             conn = ConnectionDB.openConnection();
             callSt = conn.prepareCall("{call proc_login(?,?)}");
-            callSt.setString(1,userName);
-            callSt.setString(2,password);
+            callSt.setString(1,userLoginDTO.getUsername());
+            callSt.setString(2,userLoginDTO.getPassword());
             ResultSet rs = callSt.executeQuery();
-            user = new User();
             while (rs.next()){
+                user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setPassword(rs.getString("password"));
+                user.setPhoneNumber(rs.getString("phoneNumber"));
+                user.setAddress(rs.getString("address"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setBirthDate(rs.getDate("birthDate"));
+                user.setRole(rs.getInt("role"));
+                user.setStatus(rs.getBoolean("status"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setCreatedAt(rs.getDate("created_at"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            ConnectionDB.closeConnection(conn,callSt);
+        }
+        return user;
+    }
+    @Override
+    public List<User> searchByName(String name) {
+        Connection conn = null;
+        CallableStatement callSt = null;
+        List<User> userList  = new ArrayList<>();
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("{call proc_searchUserByName(?)}");
+            callSt.setString(1,name);
+            ResultSet rs = callSt.executeQuery();
+            while (rs.next()){
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setPassword(rs.getString("password"));
+                user.setPhoneNumber(rs.getString("phoneNumber"));
+                user.setAddress(rs.getString("address"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setBirthDate(rs.getDate("birthDate"));
+                user.setRole(rs.getInt("role"));
+                user.setStatus(rs.getBoolean("status"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setCreatedAt(rs.getDate("created_at"));
+                userList.add(user);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            ConnectionDB.closeConnection(conn,callSt);
+        }
+        return userList;
+    }
+    @Override
+    public User seachUsername(String name) {
+        Connection conn = null;
+        CallableStatement callSt = null;
+        User user = null;
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("{call proc_searchUsername(?)}");
+            callSt.setString(1,name);
+            ResultSet rs =  callSt.executeQuery();
+            while (rs.next()){
+                user = new User();
                 user.setUserId(rs.getInt("user_id"));
                 user.setUsername(rs.getString("username"));
                 user.setEmail(rs.getString("email"));

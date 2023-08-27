@@ -15,13 +15,13 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/catalogController")
 public class CatalogController {
     @Autowired
     private CategoryService categoryService;
     private static final Gson GSON = new GsonBuilder().create();
 
-    @GetMapping({"/", "category"})
+    @GetMapping({"", "/catalog"})
     public String getAllCatalog(Model model) {
         List<Category> catalogList = categoryService.getAll();
         model.addAttribute("listCatalog", catalogList);
@@ -49,7 +49,7 @@ public class CatalogController {
     @PostMapping("/update")
     public String updateCate(@ModelAttribute Category category){
         categoryService.saveOfUpdate(category);
-        return "redirect:/category";
+        return "redirect:/catalogController/catalog";
     }
 
 
@@ -62,7 +62,7 @@ public class CatalogController {
     @PostMapping("/save")
     public String saveCategory(@ModelAttribute("category") Category category) {
         categoryService.saveOfUpdate(category);
-        return "redirect:/category";
+        return "redirect:/catalogController/catalog";
     }
 
 
@@ -70,7 +70,7 @@ public class CatalogController {
     @PostMapping("/delete")
     public String deleteCategory(@RequestParam("catalogId") Integer categoryId) {
         categoryService.delete(categoryId);
-        return "redirect:/category";
+        return "redirect:/catalogController/catalog";
     }
     @GetMapping("/search")
     public String searchCategory(@RequestParam("name") String name, Model model) {
@@ -79,8 +79,8 @@ public class CatalogController {
         return "admin/category"; // Đổi thành tên view của bạn nếu cần
     }
 
-    @GetMapping("/error")
-    public String error() {
-        return "admin/error";
+    @GetMapping("/index")
+    public String index() {
+        return "admin/index";
     }
 }

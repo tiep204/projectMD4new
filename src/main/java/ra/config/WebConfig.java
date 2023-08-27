@@ -73,11 +73,24 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
                         "/fonts/**",
                         "/js/**",
                         "/img/**",
-                        "/image/**")
+                        "/image/**",
+
+                        //user
+                        "/css/**",
+                        "/fonts/**",
+                        "/img/**",
+                        "/js/**",
+                        "/scss/**")
                 .addResourceLocations("classpath:/assets/admin/css/",
                         "classpath:/assets/admin/fonts/",
                         "classpath:/assets/admin/js/",
                         "classpath:/assets/admin/img/",
-                        "file:"+ uploadPath);
+                        "file:"+ uploadPath,
+                        //user
+                        "classpath:/assets/user/assets/css/",
+                        "classpath:/assets/user/assets/fonts/",
+                        "classpath:/assets/user/assets/img/",
+                        "classpath:/assets/user/assets/js/",
+                        "classpath:/assets/user/assets/scss/");
     }
 }
