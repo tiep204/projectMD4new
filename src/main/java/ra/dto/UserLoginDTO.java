@@ -56,14 +56,14 @@ public class UserLoginDTO {
         this.status = status;
     }
  public User checkValidate(Errors errors, UserService userService){
-        User user = null;
-        if(this.username.trim().equals("")){
+        User user = userService.login(this);;
+      /*  if(this.username.trim().equals("")){
             errors.rejectValue("username","username.empty");
         }else if(this.password.length()<8){
             errors.rejectValue("password","password.invalid");
         }else{
-           user = userService.login(this);
-        }
+           user =
+        }*/
         return user;
     }
 }

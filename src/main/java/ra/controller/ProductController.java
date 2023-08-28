@@ -53,7 +53,7 @@ public class ProductController {
         return new ModelAndView("admin/product", "product", new ProductDTO());
     }
 
-    @PostMapping("/create")
+   /* @PostMapping("/create")
     public String doUpload(@ModelAttribute("product") ProductDTO productDTO) {
         System.out.println("------------------------------" + productDTO.getProductName());
         // upload file
@@ -93,7 +93,63 @@ public class ProductController {
         newVideo.setListImage(fileListImage);
         productService.saveOfUpdate(newVideo);
         return "redirect:/productController/product";
+    }*/
+
+
+    @PostMapping("/create")
+    public String doUpload(@ModelAttribute("product") ProductDTO productDTO) {
+        System.out.println("------------------------------" + productDTO.getProductName());
+        // Kiểm tra xem người dùng có chọn ảnh không
+        boolean hasImage = productDTO.getImage() != null && !productDTO.getImage().isEmpty();
+        // upload file
+        File file = new File(pathUpload);
+        if (!file.exists()) {
+            // chưa tồn tại folder , khởi tạo 1 folder mới
+            file.mkdirs();
+        }
+        String fileName = null;
+        if (hasImage) {
+            fileName = productDTO.getImage().getOriginalFilename();
+            try {
+                FileCopyUtils.copy(productDTO.getImage().getBytes(), new File(pathUpload + fileName));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //upload listImage
+        //luu tru danh sach duong dan cua anh
+        List<String> fileListImage = new ArrayList<>();
+        if (productDTO.getListImage() != null) {
+            for (MultipartFile multipartFile : productDTO.getListImage()) {
+                String fileNameListImage = multipartFile.getOriginalFilename();
+                try {
+                    FileCopyUtils.copy(multipartFile.getBytes(), new File(pathUpload + fileNameListImage));
+                    fileListImage.add(fileNameListImage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }else {
+            
+        }
+
+        // chuyen doi thanh doi tuong video
+        Product newProduct = new Product();
+        newProduct.setProductName(productDTO.getProductName());
+        newProduct.setCategory(productDTO.getCategoryId());
+        newProduct.setDescription(productDTO.getDescription());
+        newProduct.setPrice(productDTO.getPrice());
+        newProduct.setImage(hasImage ? fileName : null); // Nếu không có ảnh, để trường image là null
+        newProduct.setStock(productDTO.getStock());
+        newProduct.setStatus(productDTO.isStatus());
+        newProduct.setCreateProduct(productDTO.getCreateProduct());
+        newProduct.setListImage(fileListImage);
+        productService.saveOfUpdate(newProduct);
+
+        return "redirect:/productController/product";
     }
+
 
     @PostMapping("/updateP")
     public String updateCategory(@ModelAttribute Product product) {
@@ -122,7 +178,7 @@ public class ProductController {
     }
 
     @PostMapping("/editProduct")
-    public String editPro(@ModelAttribute("product") ProductDTO productDTO,@RequestParam("category") int catId) {
+    public String editPro(@ModelAttribute("product") ProductDTO productDTO, @RequestParam("category") int catId) {
         System.out.println("------------------------------" + productDTO.getProductName());
         // upload file
         File file = new File(pathUpload);
@@ -163,12 +219,14 @@ public class ProductController {
         productService.saveOfUpdate(newVideo);
         return "redirect:/productController/product";
     }
+
     @GetMapping("/searchProduct")
     public String searchCategory(@RequestParam("name") String name, Model model) {
         List<Product> searchResult = productService.searchByName(name);
         model.addAttribute("listProduct", searchResult);
         return "admin/product"; // Đổi thành tên view của bạn nếu cần
     }
+
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model) {
         Product product = productService.getById(id);

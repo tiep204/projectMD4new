@@ -36,4 +36,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> searchByName(String name) {
         return productDAO.searchByName(name);
     }
+
+    @Override
+    public List<Product> getAllProductStatus() {
+        return productDAO.getAllProductStatus();
+    }
 }

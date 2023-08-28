@@ -2,27 +2,39 @@ package ra.model.entity;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Orders {
     private int orderId;
-    private User userId;
+    private User user;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
 
     private Date createOrder = new Date();
     private float totalPrice;
     private int status;
     private String note;
+    private List<OrderDetail> orderDetails = new ArrayList<>();
     public Orders() {
     }
 
-    public Orders(int orderId, User userId, Date createOrder, float totalPrice, int status, String note) {
+    public Orders(int orderId, User user, Date createOrder, float totalPrice, int status, String note, List<OrderDetail> orderDetails) {
         this.orderId = orderId;
-        this.userId = userId;
+        this.user = user;
         this.createOrder = createOrder;
         this.totalPrice = totalPrice;
         this.status = status;
         this.note = note;
+        this.orderDetails = orderDetails;
+    }
+
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     public int getOrderId() {
@@ -33,12 +45,12 @@ public class Orders {
         this.orderId = orderId;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreateOrder() {

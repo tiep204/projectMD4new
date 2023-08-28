@@ -9,12 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ra.dto.UserLoginDTO;
 import ra.dto.UserRegisterDTO;
-import ra.model.entity.Category;
-import ra.model.entity.Product;
-import ra.model.entity.User;
-import ra.model.service.CategoryService;
-import ra.model.service.ProductService;
-import ra.model.service.UserService;
+import ra.model.entity.*;
+import ra.model.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,6 +26,10 @@ public class HomeController {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private OrderDetailService orderDetailService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/login")
     public ModelAndView login() {
@@ -39,16 +39,24 @@ public class HomeController {
     @PostMapping("/loginn")
     public String handleLogin(@ModelAttribute("userLogin") UserLoginDTO formLoginDto, HttpSession session, BindingResult errors) {
         User user = formLoginDto.checkValidate(errors, userService);
-        List<Product> productList = productService.getAll();
         if (user.getRole() == 0) {
             session.setAttribute("userLogin", user);
             return "redirect:catalogController/index";
         } else {
             if (user.isStatus() == true) {
-                /*session.getAttribute("listProduct",productList);*/
+                Orders orders = orderService.searchOrderByUserIdAndStatus(user.getUserId());
+                if (orders == null) {
+                    orders = new Orders();
+                    orders.setStatus(0);
+                    orders.setUser(user);
+                    orderService.saveOfUpdate(orders);
+                    orders = orderService.searchOrderByUserIdAndStatus(user.getUserId());
+                }
+                List<OrderDetail> orderDetailList = orderDetailService.findByOrderId(orders.getOrderId());
+                orders.setOrderDetails(orderDetailList);
+                session.setAttribute("order", orders);
                 session.setAttribute("userLogin", user);
                 System.out.println(user.getFirstName());
-                session.setAttribute("cart", new ArrayList<>());
                 return "redirect:/index";
             } else {
                 return "user/login";
@@ -59,6 +67,7 @@ public class HomeController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("userLogin");
+        request.getSession().removeAttribute("order");
         return "redirect:/";
     }
 
@@ -67,7 +76,7 @@ public class HomeController {
         if (message.length() != 0) {
             model.addAttribute("message", message);
         }
-        List<Product> productList = productService.getAll();
+        List<Product> productList = productService.getAllProductStatus();
         model.addAttribute("productList", productList);
         return "user/index";
     }
@@ -92,11 +101,11 @@ public class HomeController {
     public String register(@ModelAttribute User userRe, Model model, @RequestParam("confirmPassword") String confirmPassword) {
         Boolean check = false;
         if (userRe.getPassword().equals(confirmPassword)) {
-            check =  userService.register(userRe);
+            check = userService.register(userRe);
         }
-        if (check){
+        if (check) {
             return "redirect:/login";
-        }else {
+        } else {
             return "admin/error";
         }
     }

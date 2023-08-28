@@ -15,8 +15,6 @@ import java.util.List;
 
 @Repository
 public class ProductDaoImpl implements ProductDAO {
-    CategoryService categoryService = new CategoryServiceImpl();
-
     @Override
     public List<Product> getAll() {
         Connection conn = null;
@@ -31,7 +29,6 @@ public class ProductDaoImpl implements ProductDAO {
                 Product product = new Product();
                 product.setProductId(rs.getInt("product_id"));
                 product.setProductName(rs.getString("product_name"));
-                /*product.setCategory(categoryService.getById(rs.getInt("catalog_id")));*/
                 product.setCategory(rs.getInt("catalog_id"));
                 product.setDescription(rs.getString("description"));
                 product.setPrice(rs.getFloat("price"));
@@ -189,6 +186,37 @@ public class ProductDaoImpl implements ProductDAO {
             e.printStackTrace();
         }finally {
             ConnectionDB.closeConnection(conn,callSt);
+        }
+        return productList;
+    }
+
+    @Override
+    public List<Product> getAllProductStatus() {
+        Connection conn = null;
+        CallableStatement callSt = null;
+        List<Product> productList = null;
+        try {
+            conn = ConnectionDB.openConnection();
+            callSt = conn.prepareCall("{call checkStatusProduct()}");
+            ResultSet rs = callSt.executeQuery();
+            productList = new ArrayList<>();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt("product_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setCategory(rs.getInt("catalog_id"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getFloat("price"));
+                product.setImage(rs.getString("image"));
+                product.setStock(rs.getInt("stock"));
+                product.setStatus(rs.getBoolean("status"));
+                product.setCreateProduct(rs.getDate("created_at"));
+                productList.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionDB.closeConnection(conn, callSt);
         }
         return productList;
     }
