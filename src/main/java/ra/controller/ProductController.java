@@ -53,50 +53,7 @@ public class ProductController {
         return new ModelAndView("admin/product", "product", new ProductDTO());
     }
 
-   /* @PostMapping("/create")
-    public String doUpload(@ModelAttribute("product") ProductDTO productDTO) {
-        System.out.println("------------------------------" + productDTO.getProductName());
-        // upload file
-        File file = new File(pathUpload);
-        if (!file.exists()) {
-            // chưa tồn tại folder , khởi tạo 1 folder mới
-            file.mkdirs();
-        }
-        String fileName = productDTO.getImage().getOriginalFilename();
-        try {
-            FileCopyUtils.copy(productDTO.getImage().getBytes(), new File(pathUpload + fileName));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        //upload listImage
-        //luu tru danh sach duong dan cua anh
-        List<String> fileListImage = new ArrayList<>();
-        for (MultipartFile multipartFile : productDTO.getListImage()) {
-            String fileNameListImage = multipartFile.getOriginalFilename();
-            try {
-                FileCopyUtils.copy(multipartFile.getBytes(), new File(pathUpload + fileNameListImage));
-                fileListImage.add(fileNameListImage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        // chuyen doi thanh doi tuong video
-        Product newVideo = new Product();
-        newVideo.setProductName(productDTO.getProductName());
-        newVideo.setCategory(productDTO.getCategoryId());
-        newVideo.setDescription(productDTO.getDescription());
-        newVideo.setPrice(productDTO.getPrice());
-        newVideo.setImage(fileName);
-        newVideo.setStock(productDTO.getStock());
-        newVideo.setStatus(productDTO.isStatus());
-        newVideo.setCreateProduct(productDTO.getCreateProduct());
-        newVideo.setListImage(fileListImage);
-        productService.saveOfUpdate(newVideo);
-        return "redirect:/productController/product";
-    }*/
-
-
-    @PostMapping("/create")
+     @PostMapping("/create")
     public String doUpload(@ModelAttribute("product") ProductDTO productDTO) {
         System.out.println("------------------------------" + productDTO.getProductName());
         // Kiểm tra xem người dùng có chọn ảnh không
